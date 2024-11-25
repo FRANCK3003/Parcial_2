@@ -1,0 +1,6 @@
+
+
+# resolucion de pantalla
+PANTALLA_ANCHO = 1280
+PANTALLA_LARGO = 720
+size_screen = PANTALLA_ANCHO,PANTALLA_LARGO
