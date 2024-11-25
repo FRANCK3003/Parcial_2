@@ -1,5 +1,4 @@
 import random
-from botones import crear_boton
 
 def inicializar_matriz(cant_filas:int, cant_columnas:int)->list:
     matriz = []
@@ -63,17 +62,7 @@ def mostrar_matriz(matriz):
         print(" ")
 
 
-def crear_botones_matriz(matriz,cordenada_x,cordenada_y):
-    cuadricula = []
-    for fila in range(len(matriz)):
-        cordenada_y +=27
-        if fila != 0:
-            cordenada_x -= 25 * len(matriz[0])
-        for columna in range(len(matriz[0])):
-            cordenada_x += 25
-            cuadricula.append(crear_boton((cordenada_x,cordenada_y,20,20),(100,100,100),str(matriz[fila][columna]),(100,100,100)))
-    
-    return cuadricula
+
 
 # test = inicializar_matriz(16,30)
 # lista_bombas = crear_bombas(100,test)
