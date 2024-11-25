@@ -11,22 +11,14 @@ clock = pygame.time.Clock()
 # RESOLUCION
 
 screen = pygame.display.set_mode(size_screen)
-#----------------------------------------
-
-#----------------------------------------
-
-
 
 # FONDO DE MENUS Y SUBMENUS
-explosion = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/explosion.png",(20,20))
-fondo_main_menu = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/Fondo_bordo.png",size_screen)
-fondo_niveles = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/Fondo_selector_nivel.png",size_screen)
-fondo_jugar = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/imagen_fondo_jugar.png",size_screen)
-fondo_puntaje = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/Fondo_puntaje.png",size_screen)
+
+
+
 # MUSICA
 musica = pygame.mixer.music.load("JUEGO_EN_CONJUNTO/assets/Toxicity.mp3")
 pygame.mixer.music.play(-1)
-
 pygame.mixer.music.set_volume(0.05)
 
 fuente = pygame.font.Font("JUEGO_EN_CONJUNTO/assets/fuente_texto.otf",25)
@@ -35,20 +27,15 @@ fuente = pygame.font.Font("JUEGO_EN_CONJUNTO/assets/fuente_texto.otf",25)
 
 # -------------------------------------------------------------------------------------------------------------------------------
 
-# BOTONES MENU
 
-boton_jugar = crear_boton((565,300,150,37), (20,149,216), 'Jugar', (123,1,123))
-boton_ver_puntajes = crear_boton((565,400,150,37), (20,149,216), 'Ver Puntaje', (123,1,123))
-boton_salir = crear_boton((565,500,150,37), (20,149,216), 'Salir', (123,1,123))
-boton_volver = crear_boton((1000,600,150,37),(20,149,216),'Volver',(123,1,123))
-
-sysfuente = pygame.font.SysFont("Arial",37)
 
 #---------------------------------------------------------------------------------------------------------------------------------
 
 
 
 def niveles():
+    fondo_niveles = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/Fondo_selector_nivel.png",size_screen)
+    boton_volver = crear_boton((1000,550,150,37),(20,149,216),'Volver',(123,1,123))
     boton_facil = crear_boton((570,150,150,37), ("white"), 'FACIL', (123,1,123))
     boton_medio = crear_boton((570,335,150,37), ("white"), 'MEDIO', (123,1,123))
     boton_dificil = crear_boton((570,540,150,37), ("white"), 'DIFICIL', (123,1,123))
@@ -95,6 +82,9 @@ def tablilla_buscaminas(dificultad):
     return matriz
 
 def jugar(dificultad):
+    fondo_jugar = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/imagen_fondo_jugar.png",size_screen)
+    explosion = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/explosion.png",(20,20))
+    boton_volver = crear_boton((1000,550,150,37),(20,149,216),'Volver',(123,1,123))
     fuente_matriz = pygame.font.SysFont('arial black',24)
     matriz = tablilla_buscaminas(dificultad)
     juego = crear_botones_matriz(matriz,170,150)
@@ -144,10 +134,27 @@ def guardar_archivo_json(ruta:str, dato:any):
     with open(ruta,"w") as archivo:
         json.dump(dato,archivo,indent=4)
 
+def cargar_json(ruta):
+    with open(ruta,"r") as archivo:
+        datos = json.load(archivo)
+    return datos
+
 
 def ver_puntajes():
+
+    sysfuente = pygame.font.SysFont("Arial black",37)
+    fondo_puntaje = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/Fondo_puntaje.png",size_screen)
+    boton_volver = crear_boton((1000,550,150,37),(20,149,216),'Volver',(123,1,123))
+    
     nombre_ingresado = ""
-    nombre_usuario = fuente.render(nombre_ingresado,True,"black")
+    try:
+        lista_score = cargar_json("JUEGO_EN_CONJUNTO\Player score\player_score.json")
+    except:
+        guardar_archivo_json("JUEGO_EN_CONJUNTO\Player score\player_score.json",[])
+
+    lista_score = cargar_json("JUEGO_EN_CONJUNTO\Player score\player_score.json")
+    nombre_usuario = sysfuente.render(nombre_ingresado,True,"black")
+
     
     flag = True
     while flag:
@@ -164,17 +171,29 @@ def ver_puntajes():
                     nombre_ingresado = nombre_ingresado[0:-1]
                 else:
                     nombre_ingresado += event.unicode
-                nombre_usuario = fuente.render(nombre_ingresado,True,"black")
+                nombre_usuario = sysfuente.render(nombre_ingresado,True,"black")
         
-        print(nombre_ingresado)
+        
         
         screen.blit(nombre_usuario,(1000,400))
         animacion_boton(screen,boton_volver,fuente,'boton_rec',boton_volver['color'],20,("white"))
         pygame.display.update()
+    print(nombre_ingresado)
+    lista_score.append(nombre_ingresado)
+    
+    score_points = guardar_archivo_json("JUEGO_EN_CONJUNTO/Player score/player_score.json", lista_score)
+    print(score_points)
     menu()
 
 
 def menu():
+    fondo_main_menu = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/Fondo_bordo.png",size_screen)
+    boton_jugar = crear_boton((565,250,150,37), (20,149,216), 'Jugar', (123,1,123))
+    boton_ver_puntajes = crear_boton((565,350,150,37), (20,149,216), 'Ver Puntaje', (123,1,123))
+    boton_salir = crear_boton((565,450,150,37), (20,149,216), 'Salir', (123,1,123))
+    
+
+
     flag_main_menu = False
     run = True
     while run:
@@ -196,7 +215,6 @@ def menu():
         
         if flag_main_menu == False:
             screen.blit(fondo_main_menu,(0,0))
-            # animacion_boton(screen,boton_niveles,fuente,'boton_rec',boton_niveles['color'],20,("white"))
             animacion_boton(screen,boton_jugar,fuente,'boton_rec',boton_jugar['color'],20,("white"))
             animacion_boton(screen,boton_ver_puntajes,fuente,'boton_rec',boton_ver_puntajes['color'],20,("white"))
             animacion_boton(screen,boton_salir,fuente,'boton_rec',boton_salir['color'],20,("white"))

@@ -1,4 +1,5 @@
 import pygame
+
 pygame.init()
 modelo = {
     'boton':None,
@@ -51,3 +52,4 @@ def animacion_cacilla(screen, boton:dict,fuente, parametro, color, borde,texto_c
         pintar_centrar_texto(screen,fuentex,boton['boton_rec'])
     else:
         pygame.draw.rect(screen, boton['color'], boton[parametro],border_radius=borde)
+
