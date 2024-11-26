@@ -1,27 +1,33 @@
 import pygame
 
 from botones import *
+from cargar_archivo import *
 
-def music (ruta_music:str,loot:int,volume:float=0.10):
-    pygame.mixer.music.unload()
-    pygame.mixer.music.load(ruta_music)
-    pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(volume)
+
+
+def tabla_puntuaciones(lista_puntaje):
+    sysfuente = pygame.font.SysFont("Arial black",37)
+    contador = 100
+    # while flag:
+    for i in lista_puntaje:
+        contador += 100
+
+        fuentex = sysfuente.render(f'{i['nombre']}     {i['puntuacion']}',True,'white')
+        screen.blit(fuentex,(300,contador))
+
+
 
 def ver_puntajes():
-
-    sysfuente = pygame.font.SysFont("Arial black",37)
     fondo_puntaje = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/Fondo_puntaje.png",size_screen)
     boton_volver = crear_boton((1000,550,150,37),(20,149,216),'Volver',(123,1,123))
     
-    nombre_ingresado = ""
+
     try:
         lista_score = cargar_json("JUEGO_EN_CONJUNTO/Player score/player_score.json")
     except:
         guardar_archivo_json("JUEGO_EN_CONJUNTO/Player score/player_score.json",[])
 
     lista_score = cargar_json("JUEGO_EN_CONJUNTO/Player score/player_score.json")
-    nombre_usuario = sysfuente.render(nombre_ingresado,True,"black")
 
     
     flag = True
@@ -34,43 +40,84 @@ def ver_puntajes():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if boton_volver['boton_rec'].collidepoint(pygame.mouse.get_pos()):
                     flag = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    nombre_ingresado = nombre_ingresado[0:-1]
-                else:
-                    nombre_ingresado += event.unicode
-                nombre_usuario = sysfuente.render(nombre_ingresado,True,"black")
-        
-        
-        
-        screen.blit(nombre_usuario,(1000,400))
+
+        tabla_puntuaciones(lista_score)
+
         animacion_boton(screen,boton_volver,fuente,'boton_rec',boton_volver['color'],20,("white"))
         pygame.display.update()
-    print(nombre_ingresado)
-    lista_score.append(nombre_ingresado)
-    
-    score_points = guardar_archivo_json("JUEGO_EN_CONJUNTO/Player score/player_score.json", lista_score)
-    print(score_points)
     menu()
 
 
 # ---------------------------------------------------------
+def contadore(fuente,cont_seg,cont_min,):
+    if cont_min == 0:
+        relog_contador = fuente.render(f"Time: {cont_seg}",True,"white","black")
+    else:
+        relog_contador = fuente.render(f"Time: {cont_min} : {cont_seg}",True,"white","black")
+    screen.blit(relog_contador,(1000,100))
 
+
+def guardar_puntuacion(puntos_en_pantalla,die,cont_puntos):
+    sysfuente = pygame.font.SysFont("Arial black",37)
+    you_die_img = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/you_die.png",size_screen)
+    lose_music = pygame.mixer.Sound("JUEGO_EN_CONJUNTO/assets/Game Over.mp3")
+    
+
+    lose_music.set_volume(0.05)
+    boton_volver = crear_boton((1000,600,150,37),(20,149,216),'Volver',(123,1,123))
+    
+    
+    nombre_ingresado = ""
+
+
+    flag = True
+    while flag:
+        if die == True:
+            lose_music.play()
+            screen.blit(you_die_img,(0,0))
+
+        else:
+            pass
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                flag = False
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if boton_volver['boton_rec'].collidepoint(pygame.mouse.get_pos()):
+                    flag = False
+                    lose_music.stop()
+                    niveles()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    cargar_archivo('JUEGO_EN_CONJUNTO/Player score/player_score.json',{"nombre":nombre_ingresado,"puntuacion":cont_puntos})
+                    print("uwu")
+                elif event.key == pygame.K_BACKSPACE:
+                    nombre_ingresado = nombre_ingresado[0:-1]                                      
+                else:
+                    nombre_ingresado += event.unicode
+        nombre_usuario = sysfuente.render(nombre_ingresado,True,"white")  
+        
+        animacion_boton(screen,boton_volver,fuente,'boton_rec',boton_volver['color'],20,("white"))
+        screen.blit(puntos_en_pantalla,(100,100))
+        screen.blit(nombre_usuario,(500,500))
+
+
+        pygame.display.update()
 
 def jugar(dificultad):
     jugar_music = pygame.mixer.Sound("JUEGO_EN_CONJUNTO/assets/wolf_play.mp3")
-    lose_music = pygame.mixer.Sound("JUEGO_EN_CONJUNTO/assets/Game Over.mp3")
-
-    you_die_img = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/you_die.png",size_screen)
     fondo_jugar = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/imagen_fondo_jugar.png",size_screen)
     explosion = escalar_imagenes_fondo("JUEGO_EN_CONJUNTO/assets/explosion.png",(20,20))
     
     boton_reiniciar = crear_boton((50,650,150,37),(20,149,216),'Reiniciar',(123,1,123))
-    boton_volver = crear_boton((1000,600,150,37),(20,149,216),'Volver',(123,1,123))
+    boton_volver = crear_boton((1000,650,150,37),(20,149,216),'Volver',(123,1,123))
     
     fuente_matriz = pygame.font.SysFont('arial black',24)
     matriz = tablilla_buscaminas(dificultad)
     juego = crear_botones_matriz(matriz,170,150)
+    
     #------------------------------------------------
     mi_evento = pygame.USEREVENT + 1
     un_segundo = 1000
@@ -79,77 +126,62 @@ def jugar(dificultad):
     contador_segundos = 0
     contador_minutos = 0
     
+    contador_puntos = 0
+    
     you_die = False
-    you_win = False
     jugar_music.play()
     jugar_music.set_volume(0.05)
-    contador_puntos = 0
     
     #------------------------------------------------
     flag = True
     while flag:
         if you_die == False:
-            screen.blit(fondo_jugar,(0,0))
-            if contador_minutos == 0:
-                relog_contador = fuente_matriz.render(f"Time: {contador_segundos}",True,"white","black")
-            else:
-                relog_contador = fuente_matriz.render(f"Time: {contador_minutos} : {contador_segundos}",True,"white","black")
             
+            screen.blit(fondo_jugar,(0,0))
             puntos_en_pantalla = fuente_matriz.render(f"{contador_puntos}",True,"white","black")
             for boton in juego:
                 animacion_cacilla(screen,boton,fuente_matriz,'boton_rec',(150, 150, 150),0,'white',explosion)
             
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     flag = False
                     pygame.quit()
-            
+
                 if event.type == mi_evento:
                     contador_segundos += 1
-                    if contador_segundos == 60:
-                        contador_minutos += 1
-                        contador_segundos = 0
+                if contador_segundos  == 60:
+                    contador_minutos += 1
+                    contador_segundos += 1
                 
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    
                     for boton in juego:
                         if boton['boton_rec'].collidepoint(pygame.mouse.get_pos()):
                             boton['evento'] = True
-                        
-                        if boton['boton_rec'].collidepoint(pygame.mouse.get_pos()) and not boton['texto'] == "-1":
-                            contador_puntos += 1
-                            #podriar ir un contador aca para los puntos por Click
-                    for boton in juego:
+                            
                         if boton['evento'] == True and boton['texto'] == "-1":
                             jugar_music.stop()
                             you_die = True
-                        
-                    
+                            flag = False
+                        if boton['boton_rec'].collidepoint(pygame.mouse.get_pos()) and not boton['texto'] == "-1":
+                            contador_puntos += 1
+                
                     if boton_reiniciar['boton_rec'].collidepoint(pygame.mouse.get_pos()):
                         jugar_music.stop()
                         flag = False
                         jugar(dificultad)
-            screen.blit(relog_contador,(1000,100))
-            screen.blit(puntos_en_pantalla,(100,100))
-            animacion_boton(screen,boton_reiniciar,fuente,'boton_rec',boton_reiniciar['color'],20,("white"))
-        else:
-            lose_music.play()
-            lose_music.set_volume(0.05)
-            screen.blit(you_die_img,(0,0))
-            screen.blit(puntos_en_pantalla,(200,300))
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    flag = False
-                    pygame.quit()
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if boton_volver['boton_rec'].collidepoint(pygame.mouse.get_pos()):
+                        jugar_music.stop()
                         flag = False
-                        lose_music.stop()
                         niveles()
+                    
+            contadore(fuente_matriz,contador_segundos,contador_minutos)
+            screen.blit(puntos_en_pantalla,(100,100))
             animacion_boton(screen,boton_volver,fuente,'boton_rec',boton_volver['color'],20,("white"))
-        
+            animacion_boton(screen,boton_reiniciar,fuente,'boton_rec',boton_reiniciar['color'],20,("white"))
         pygame.display.update()
-    
+    guardar_puntuacion(puntos_en_pantalla,you_die,contador_puntos)
 
 # ---------------------------------------------------------
 

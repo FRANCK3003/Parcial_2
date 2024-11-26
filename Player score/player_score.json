@@ -1,12 +1,18 @@
 [
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
+    {
+        "nombre": "pepe",
+        "puntuacion": 3
+    },
+    {
+        "nombre": "jose",
+        "puntuacion": 2
+    },
+    {
+        "nombre": "minimi",
+        "puntuacion": 4
+    },
+    {
+        "nombre": "jose",
+        "puntuacion": 3
+    }
 ]

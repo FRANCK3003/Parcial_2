@@ -74,15 +74,6 @@ def tablilla_buscaminas(dificultad):
 
 
 
-def guardar_archivo_json(ruta:str, dato:any):
-    with open(ruta,"w") as archivo:
-        json.dump(dato,archivo,indent=4)
-
-
-def cargar_json(ruta):
-    with open(ruta,"r") as archivo:
-        datos = json.load(archivo)
-    return datos
 
 
 
