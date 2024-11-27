@@ -8,7 +8,7 @@ PANTALLA_LARGO = 720
 SIZE_SCREEN = PANTALLA_ANCHO,PANTALLA_LARGO
 SCREEN = pygame.display.set_mode(SIZE_SCREEN)
 
-PATH = 'JUEGO_EN_CONJUNTO/assets'
+PATH = 'assets'
 # fuentes 
 FUENTE_1 = pygame.font.Font(f"{PATH}/fuente_texto.otf",25)
 

@@ -25,11 +25,11 @@ def ver_puntajes(screen):
     
 
     try:
-        lista_score = cargar_json("JUEGO_EN_CONJUNTO/Player score/player_score.json")
+        lista_score = cargar_json("Player score/player_score.json")
     except:
-        guardar_archivo_json("JUEGO_EN_CONJUNTO/Player score/player_score.json",[])
+        guardar_archivo_json("Player score/player_score.json",[])
 
-    lista_score = cargar_json("JUEGO_EN_CONJUNTO/Player score/player_score.json")
+    lista_score = cargar_json("Player score/player_score.json")
 
     aux = 1
     flag = True
@@ -88,7 +88,7 @@ def guardar_puntuacion(screen,puntos_en_pantalla,die,cont_puntos):
                     niveles(screen)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    cargar_archivo('JUEGO_EN_CONJUNTO/Player score/player_score.json',{"nombre":nombre_ingresado,"puntuacion":cont_puntos})
+                    cargar_archivo('Player score/player_score.json',{"nombre":nombre_ingresado,"puntuacion":cont_puntos})
                 elif event.key == pygame.K_BACKSPACE:
                     nombre_ingresado = nombre_ingresado[0:-1]                                      
                 else:
