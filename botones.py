@@ -16,14 +16,14 @@ def pintar_centrar_texto(screen:pygame.Surface,text_render:str,text_rect:pygame.
 
 
 def escalar_imagenes_fondo (direc_imagen:str,tamanio:tuple):
-    """_summary_
+    """escala la imagen sugun el tamaño dado 
 
     Args:
-        direc_imagen (str): _description_
-        tamanio (tuple): _description_
+        direc_imagen (str): directorio de la imagen
+        tamanio (tuple): tapaño a escalar
 
     Returns:
-        _type_: _description_
+        superficie 
     """    
     imagen = pygame.image.load(direc_imagen)
     imagen = pygame.transform.scale(imagen,(tamanio))
@@ -119,17 +119,17 @@ def animacion_boton(screen:pygame.surface, boton:dict,fuente:pygame.font.Font, p
         pintar_centrar_texto(screen,fuentex,boton['boton_rec'])
 
 
-def animacion_cacilla(screen:pygame.Surface, boton:dict,fuente:pygame.font.Font, parametro:pygame.Rect, color:tuple, borde:int,texto_color:tuple):
-    """_summary_
-
+def animacion_cacilla(screen:pygame.Surface, boton:dict,fuente:pygame.font.Font, parametro:pygame.Rect, color:tuple, borde:int,texto_color:tuple,imagen=None):
+    """
+        Realiza una animación para un botón o casilla en función de su estado,renderiza el texto
     Args:
-        screen (pygame.Surface): _description_
-        boton (dict): _description_
-        fuente (pygame.font.Font): _description_
-        parametro (pygame.Rect): _description_
-        color (tuple): _description_
-        borde (int): _description_
-        texto_color (tuple): _description_
+        screen (pygame.Surface): superficio dede se digujara el boton
+        boton (dict): diccionario con las configuraciones del boton
+        fuente (pygame.font.Font): fuente de texto
+        parametro (pygame.Rect): cordenadas y tamaño del rectangulo
+        color (tuple): color del boton
+        borde (int): bordes del boton
+        texto_color (tuple): color del texto
     """
 
     if boton['evento'] == True:
@@ -150,11 +150,19 @@ def animacion_cacilla(screen:pygame.Surface, boton:dict,fuente:pygame.font.Font,
 #     return matriz
 
 def tablero(dificultad):
+    'inicializa la matris segun la dificultad dada'
     matriz = inicializar_matriz(dificultad[0],dificultad[1])
     return matriz
 
 def crear_botones_matriz(matriz,cordenada_x,cordenada_y):
+    """
+        crea los botones segun la matris pasada
 
+        Args:
+            _matriz:cantidad de botones a crear
+            cordenada_x: donde empiza a dibujar los botones segun el eje x 
+            cordenada_y: donde empiza a dibujar los botones segun el eje y
+    """
     cuadricula = []
     for fila in range(len(matriz)):
         cordenada_y +=27
