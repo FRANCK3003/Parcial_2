@@ -25,11 +25,11 @@ def ver_puntajes(screen):
     
 
     try:
-        lista_score = cargar_json("JUEGO_EN_CONJUNTO/Player score/player_score.json")
+        lista_score = cargar_json("Player score/player_score.json")
     except:
-        guardar_archivo_json("JUEGO_EN_CONJUNTO/Player score/player_score.json",[])
+        guardar_archivo_json("Player score/player_score.json",[])
 
-    lista_score = cargar_json("JUEGO_EN_CONJUNTO/Player score/player_score.json")
+    lista_score = cargar_json("Player score/player_score.json")
 
     aux = 1
     flag = True

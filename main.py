@@ -7,5 +7,4 @@ pygame.init()
 pygame.mixer.init()
 
 
-
 menu(SCREEN)
