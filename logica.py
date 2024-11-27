@@ -9,8 +9,6 @@ def inicializar_matriz(cant_filas:int, cant_columnas:int)->list:
 
 def crear_bombas(cantidad,matriz):
     lista_bombas = set()
-
-
 #  y fila , x columna
     while cantidad > len(lista_bombas):
         y = random.randint(0,len(matriz)-1) 
@@ -25,7 +23,7 @@ def cargar_bomba(matriz, lista_bombas):
     for y,x in lista_bombas:
         matriz[y][x] = -1
 
-
+#                               Lista de seters
 def detectar_bombas(matriz,lista_bombas):
     filas = len(matriz)
     columnas = len(matriz[0])
@@ -42,14 +40,17 @@ def detectar_bombas(matriz,lista_bombas):
         for dy, dx in direcciones:
             ny, nx = y + dy, x + dx
             # Verificar que no salga de los límites
+            # evitamos index error sin try except
+
             if 0 <= ny < filas and 0 <= nx < columnas:
                 # Incrementar solo si no es una bomba
+                
                 if matriz[ny][nx] != -1:
                     matriz[ny][nx] += 1
 
 
 
-def parceo_dato(matriz):
+def parseo_dato(matriz):
     for y in range(len(matriz)):
         for x in range(len(matriz)):
             matriz[y][x] = str(matriz[y][x])
@@ -62,40 +63,25 @@ def mostrar_matriz(matriz):
         print(" ")
 
 
+# def detectar_x(boton):
+#     filas = len(matriz)
+#     columnas = len(matriz[0])
+    
+        
+#         direcciones = [
+#             (-1, -1), (-1, 0), (-1, 1),
+#             (0, -1),          (0, 1),
+#             (1, -1), (1, 0), (1, 1)
+#             ]
+        
+        
+#         for dy, dx in direcciones:
+#             if boton['texto'] == 0
+#             # Verificar que no salga de los límites
+#             # evitamos index error sin try except
 
-
-# test = inicializar_matriz(16,30)
-# lista_bombas = crear_bombas(100,test)
-# print(lista_bombas)
-# cargar_bomba(test,lista_bombas)
-# print(test)
-# detectar_bombas(test,lista_bombas)
-# print(test)
-# mostrar_matriz(test)
-
-
-# import pygame
-
-# parceo_dato(test)
-# fuego = crear_botones_matriz(test)
-# pygame.init()
-# fuente = pygame.font.SysFont('arial',24)
-# screen = pygame.display.set_mode((1280,720))
-
-
-# run = True
-# while run:
-#     # recorremos los eventos
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             run = False
-
-#     screen.fill('white')
-#     for boton in fuego:
-#         animacion_boton(screen,boton,fuente,'boton_rec',(150, 150, 150),0,'white')
-
-#     pygame.display.flip()
-
-
-
-
+#             if 0 <= ny < filas and 0 <= nx < columnas:
+#                 # Incrementar solo si no es una bomba
+                
+#                 if matriz[ny][nx] != -1:
+#                     matriz[ny][nx] += 1
