@@ -3,9 +3,9 @@ from pantallas_principales import *
 import pygame
 
 # Inicializamos el mixer
-
+pygame.init()
 pygame.mixer.init()
 
-# MUSICA
 
-menu()
+
+menu(SCREEN)
