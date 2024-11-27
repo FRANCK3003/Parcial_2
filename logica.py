@@ -55,6 +55,15 @@ def cargar_bomba(matriz, lista_bombas):
 
 #                               Lista de seters
 def detectar_bombas(matriz,lista_bombas):
+    """
+    Actualiza una matriz indicando el número de bombas adyacentes a cada celda.
+
+    Parámetros:
+    matriz (list): La matriz a modificar. Las celdas se incrementarán por cada bomba adyacente en las 8 direcciones (horizontal, vertical, diagonal)
+    
+    lista_bombas (set): Un conjunto de tuplas, donde cada tupla representa las coordenadas de una bomba en la matriz.
+
+    """
     filas = len(matriz)
     columnas = len(matriz[0])
     
@@ -84,34 +93,3 @@ def parseo_dato(matriz):
     for y in range(len(matriz)):
         for x in range(len(matriz)):
             matriz[y][x] = str(matriz[y][x])
-
-
-def mostrar_matriz(matriz):
-    for i in range(len(matriz)):
-        for j in range(len(matriz[i])):
-            print(f'{matriz[i][j]:^1}',end=" ")
-        print(" ")
-
-
-# def detectar_x(boton):
-#     filas = len(matriz)
-#     columnas = len(matriz[0])
-    
-        
-#         direcciones = [
-#             (-1, -1), (-1, 0), (-1, 1),
-#             (0, -1),          (0, 1),
-#             (1, -1), (1, 0), (1, 1)
-#             ]
-        
-        
-#         for dy, dx in direcciones:
-#             if boton['texto'] == 0
-#             # Verificar que no salga de los límites
-#             # evitamos index error sin try except
-
-#             if 0 <= ny < filas and 0 <= nx < columnas:
-#                 # Incrementar solo si no es una bomba
-                
-#                 if matriz[ny][nx] != -1:
-#                     matriz[ny][nx] += 1
