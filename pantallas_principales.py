@@ -104,13 +104,12 @@ def jugar(screen,dificultad):
     
     jugar_music = pygame.mixer.Sound(f"{PATH}/wolf_play.mp3")
     fondo_jugar = escalar_imagenes_fondo(f"{PATH}/imagen_fondo_jugar.png",SIZE_SCREEN)
-    explosion = escalar_imagenes_fondo(f"{PATH}/explosion.png",(20,20))
+    bandera = escalar_imagenes_fondo(f"{PATH}/bandera_mina.png",(20,20))
     
     boton_reiniciar = crear_boton((50,650,150,37),(20,149,216),'Reiniciar',(123,1,123))
     boton_volver = crear_boton((1000,650,150,37),(20,149,216),'Volver',(123,1,123))
     
     fuente_matriz = pygame.font.SysFont('arial black',24)
-    signo = fuente_matriz.render("?", True, "black")
     
     matriz = tablero(dificultad)
     lista_bomba = crear_bombas(dificultad[2],matriz)
@@ -148,7 +147,7 @@ def jugar(screen,dificultad):
             for boton in juego:
                 animacion_cacilla(screen,boton,fuente_matriz,'boton_rec',(150, 150, 150),0,'white')
                 if boton['marcado']:
-                    screen.blit(signo, (boton['boton_rec'].x+4,boton['boton_rec'].y-7))
+                    screen.blit(bandera, (boton['boton_rec'].x,boton['boton_rec'].y))
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
